@@ -85,6 +85,9 @@ body.locked .nav{opacity:0;pointer-events:none}
 .copy .label{margin-bottom:22px;display:block}
 .copy h1,.copy h2{margin-bottom:.32em}
 
+.by{position:fixed;left:0;right:0;bottom:0;z-index:48;padding:44px var(--pad) 18px;font-weight:500;font-size:10px;letter-spacing:.26em;text-transform:uppercase;color:rgba(244,240,232,.55);pointer-events:none;transition:opacity .6s;background:linear-gradient(0deg,rgba(6,6,6,.92) 0%,rgba(6,6,6,.7) 45%,rgba(6,6,6,0) 100%)}
+body.locked .by{opacity:0}
+
 /* pager */
 .pager{position:fixed;right:clamp(10px,1.6vw,24px);bottom:22px;z-index:50;display:flex;flex-direction:column;gap:6px;transition:opacity .6s}
 .pager button{width:38px;height:38px;border:1px solid var(--line);font-size:15px;color:var(--soft);background:rgba(6,6,6,.35);backdrop-filter:blur(6px);transition:border-color .3s,color .3s,transform .3s}
@@ -244,6 +247,7 @@ body.locked .pager{opacity:0;pointer-events:none}
 @media (max-width:900px){
   .thumb{aspect-ratio:3/2}
   .links a{display:none}
+  .by{padding:26px var(--pad) 12px;font-size:9px;background:linear-gradient(0deg,rgba(6,6,6,.98) 0%,rgba(6,6,6,.96) 55%,rgba(6,6,6,0) 100%)}
   .pager{display:none}
   .g3,.g4,.roll,.collab,.split{grid-template-columns:1fr}
   .roll{border-top:0}.roll div{border-top:1px solid var(--line);padding:22px 0}
@@ -268,6 +272,7 @@ body.locked .pager{opacity:0;pointer-events:none}
 
 <div class="progress" id="progress"></div>
 <div class="grain" aria-hidden="true"></div>
+<div class="by">Presented by INHAUS Digital</div>
 <div class="pager"><button id="up" aria-label="Previous slide">↑</button><button id="down" aria-label="Next slide">↓</button></div>
 <div class="flash" id="flash"></div>
 
@@ -323,10 +328,10 @@ body.locked .pager{opacity:0;pointer-events:none}
     <div class="head">
       <span class="label rv">The brand</span>
       <h2 class="rv d1">Not the quiet side of Japanese dining.</h2>
-      <p class="rv d2 soft" style="margin-top:18px">Let's be honest, Abu Dhabi doesn't need another Japanese restaurant. It has plenty, and most of them whisper.</p>
+      <p class="rv d2 soft" style="margin-top:18px">There's a time for the quiet counter. Kissaki is for the other nights.</p>
     </div>
     <div class="g3">
-      <div class="item rv d1"><span class="label">The problem</span><h3>Good sushi is everywhere.</h3><p>So "we're Japanese" is not a reason to come.</p></div>
+      <div class="item rv d1"><span class="label">The context</span><h3>Abu Dhabi knows its sushi.</h3><p>So being Japanese is not what makes Kissaki different.</p></div>
       <div class="item rv d2"><span class="label">The difference</span><h3>Same craft, more noise.</h3><p>Great food, great music, great cocktails, great room, great crowd. All at the same time.</p></div>
       <div class="item rv d3"><span class="label">The position</span><h3>Japanese craft. New York energy. Now in Abu Dhabi.</h3><p>What Carbone did for Italian in Dubai. The attitude lands together with the menu.</p></div>
     </div>
