@@ -1,0 +1,704 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Kissaki Abu Dhabi · The Night Moves East · INHAUS Digital</title>
+<style>
+@font-face{font-family:"Marcellus";src:url(fonts/marcellus-latin-400-normal.woff2) format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"Jost";src:url(fonts/jost-latin-wght-normal.woff2) format("woff2");font-weight:100 900;font-display:swap}
+:root{
+  --black:#060606; --ink:#0d0c0b; --paper:#f4f0e8; --soft:#cfc8bb; --dim:#8f887b; --line:rgba(244,240,232,.18);
+  --cab:#f2b705;
+  --pad:clamp(22px,5vw,88px);
+  --serif:"Marcellus","Cormorant Garamond",Georgia,serif;
+  --sans:"Jost","Avenir Next","Helvetica Neue",Arial,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{background:var(--black);scroll-behavior:smooth}
+body{background:var(--black);color:var(--paper);font-family:var(--sans);font-weight:300;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+body.locked{overflow:hidden;height:100vh}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+a{color:inherit;text-decoration:none}
+img{display:block}
+
+/* ---------- type ---------- */
+.label{font-family:var(--sans);font-weight:500;font-size:12px;letter-spacing:.26em;text-transform:uppercase;color:var(--soft)}
+.label b{font-weight:500;color:var(--paper)}
+h1,h2,h3{font-family:var(--serif);font-weight:400;letter-spacing:-.005em;text-wrap:balance}
+h1{font-size:clamp(38px,5.4vw,92px);line-height:1.04}
+h2{font-size:clamp(30px,3.7vw,62px);line-height:1.08}
+h3{font-size:clamp(21px,1.9vw,30px);line-height:1.16}
+p{font-size:clamp(17px,1.32vw,21px);line-height:1.62;color:var(--paper);max-width:34em;text-wrap:pretty}
+p + p{margin-top:1.05em}
+p.big{font-family:var(--serif);font-size:clamp(21px,2vw,31px);line-height:1.4;max-width:27em}
+.soft{color:var(--soft)}
+em{font-style:normal;color:inherit}
+
+/* ---------- nav ---------- */
+.nav{position:fixed;top:0;left:0;right:0;z-index:50;display:flex;align-items:center;justify-content:space-between;gap:24px;padding:22px var(--pad);
+  background:linear-gradient(180deg,rgba(6,6,6,.82),rgba(6,6,6,0));transition:opacity .6s}
+.brand{font-family:var(--serif);font-size:19px;letter-spacing:.42em;text-transform:uppercase;white-space:nowrap}
+.brand small{font-family:var(--sans);font-weight:500;font-size:11px;letter-spacing:.26em;color:var(--dim);margin-left:14px}
+.links{display:flex;gap:clamp(14px,2.2vw,34px);align-items:center}
+.links a{font-weight:500;font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--soft);padding:8px 0;border-bottom:1px solid transparent;transition:color .3s,border-color .3s}
+.links a:hover,.links a.on{color:var(--paper);border-color:var(--cab)}
+.snd{font-weight:500;font-size:11px;letter-spacing:.2em;text-transform:uppercase;border:1px solid var(--line);padding:10px 14px;min-height:40px;white-space:nowrap}
+.snd:hover{border-color:var(--cab)}
+:focus-visible{outline:2px solid var(--cab);outline-offset:3px}
+.progress{position:fixed;left:0;top:0;height:2px;width:0;background:var(--cab);z-index:60}
+body.locked .nav{opacity:0;pointer-events:none}
+
+.brand img{height:34px;width:auto;display:block}
+.brand.has{display:flex;align-items:center;letter-spacing:0}
+.gate .brand img{height:clamp(70px,10vh,110px)}
+.closelogo{height:clamp(60px,9vh,96px);width:auto;margin:0 auto clamp(24px,4vh,44px)}
+
+/* ---------- gate ---------- */
+.gate{overflow:hidden;position:fixed;inset:0;z-index:80;background:var(--black);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:var(--pad);transition:opacity 1.1s ease,visibility 1.1s}
+.gate.gone{opacity:0;visibility:hidden}
+.gate .bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.34;filter:blur(6px) brightness(.8);transform:scale(1.06)}
+.gate > *:not(.bg){position:relative}
+.gate .brand{font-size:clamp(22px,2.6vw,34px);letter-spacing:.5em;margin-right:-.5em}
+.gate p{margin:26px auto 0;max-width:26em;color:var(--soft);font-size:17px}
+.gate .go{margin-top:44px;font-weight:500;font-size:12px;letter-spacing:.26em;text-transform:uppercase;background:var(--paper);color:#000;padding:20px 34px;transition:background .3s}
+.gate .go:hover{background:var(--cab)}
+.gate .quiet{margin-top:20px;font-weight:500;font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--dim);padding:10px;border-bottom:1px solid var(--line)}
+.gate .quiet:hover{color:var(--paper)}
+
+/* ---------- panels ---------- */
+.panel{position:relative;min-height:100vh;min-height:100svh;display:flex;flex-direction:column;justify-content:flex-end;padding:calc(var(--pad) + 70px) var(--pad) clamp(48px,9vh,110px);overflow:hidden;isolation:isolate}
+.panel > .ph{position:absolute;inset:0;z-index:-2;overflow:hidden}
+.panel > .ph img{width:100%;height:100%;object-fit:cover;transform:scale(1.09);transition:transform 7s cubic-bezier(.2,.6,.2,1)}
+.panel.in > .ph img{transform:scale(1)}
+.panel > .ph::after{content:"";position:absolute;inset:0;background:
+  linear-gradient(0deg,rgba(6,6,6,.94) 0%,rgba(6,6,6,.5) 32%,rgba(6,6,6,0) 62%,rgba(6,6,6,.42) 100%)}
+.panel.left > .ph::after{background:
+  linear-gradient(90deg,rgba(6,6,6,.9) 0%,rgba(6,6,6,.58) 34%,rgba(6,6,6,0) 66%),
+  linear-gradient(0deg,rgba(6,6,6,.8) 0%,rgba(6,6,6,0) 36%,rgba(6,6,6,.4) 100%)}
+.panel.center{justify-content:center;align-items:center;text-align:center}
+.panel.center p{margin-left:auto;margin-right:auto}
+.panel.center > .ph::after{background:radial-gradient(ellipse at center,rgba(6,6,6,.5) 0%,rgba(6,6,6,.86) 75%)}
+.panel.plain{background:var(--ink);min-height:0;padding-top:clamp(90px,14vh,170px);padding-bottom:clamp(90px,14vh,170px);justify-content:flex-start}
+.copy{max-width:660px}
+.copy .label{margin-bottom:22px;display:block}
+.copy h1,.copy h2{margin-bottom:.32em}
+
+/* pager */
+.pager{position:fixed;right:clamp(10px,1.6vw,24px);bottom:22px;z-index:50;display:flex;flex-direction:column;gap:6px;transition:opacity .6s}
+.pager button{width:38px;height:38px;border:1px solid var(--line);font-size:15px;color:var(--soft);background:rgba(6,6,6,.35);backdrop-filter:blur(6px);transition:border-color .3s,color .3s,transform .3s}
+.pager button:hover{border-color:var(--cab);color:var(--paper)}
+.pager button:active{transform:scale(.94)}
+body.locked .pager{opacity:0;pointer-events:none}
+
+
+/* grain */
+.grain{position:fixed;inset:-40%;z-index:45;pointer-events:none;opacity:.07;mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  animation:grain 1.2s steps(5) infinite}
+@keyframes grain{0%{transform:translate(0,0)}20%{transform:translate(-2%,1.5%)}40%{transform:translate(1.5%,-2%)}60%{transform:translate(-1.5%,-1%)}80%{transform:translate(2%,2%)}100%{transform:translate(0,0)}}
+
+/* living pictures: slow drift + light parallax */
+.panel > .ph img,.panel > .ph video{object-fit:cover;position:absolute;left:0;top:-14%;width:100%;height:128% !important;transform:none !important;scale:1.02;translate:0 var(--py,0px);transition:none !important;will-change:translate,scale}
+.panel.in > .ph img,.panel.in > .ph video{animation:drift 26s ease-in-out infinite alternate}
+@keyframes drift{from{scale:1.02}to{scale:1.07}}
+.panel > .ph{opacity:.55;transition:opacity 1.6s ease}
+.panel.in > .ph{opacity:1}
+
+/* headlines rise word by word */
+.sw{opacity:1 !important;transform:none !important}
+.sw .w{display:inline-block;overflow:hidden;vertical-align:top;padding-bottom:.16em;margin-bottom:-.16em}
+.sw .w > span{display:inline-block;transform:translateY(112%);transition:transform 1.05s cubic-bezier(.16,.8,.2,1);transition-delay:calc(var(--i) * 55ms + var(--b,0ms))}
+.sw.on .w > span{transform:none}
+
+/* lines draw in */
+.route i{transform:scaleX(0);transform-origin:left;transition:transform 1.3s cubic-bezier(.2,.7,.2,1) .5s}
+.in .route i,#idea.hit .route i{transform:scaleX(1)}
+#idea .route i{transition-delay:.2s}
+#idea:not(.hit) .route i{transform:scaleX(0)}
+.item,.princ li,.meta,.snote{position:relative;border-top-color:transparent !important}
+.item::before,.princ li::after,.meta::before,.snote::before{content:"";position:absolute;left:0;top:-1px;height:1px;width:100%;background:var(--line);transform:scaleX(0);transform-origin:left;transition:transform 1.4s cubic-bezier(.2,.7,.2,1) .2s}
+.item.seen::before,.princ li.seen::after,.in .meta::before,.in .snote::before{transform:scaleX(1)}
+.item,.collab div{transition:opacity 1s ease,transform 1.1s cubic-bezier(.2,.7,.2,1),background .5s}
+.item h3{transition:color .4s}
+
+.collab div:hover{background:rgba(6,6,6,.55)}
+.roll div.k::before{animation:pulse 2.6s ease-in-out infinite}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 4px rgba(242,183,5,.16)}50%{box-shadow:0 0 0 10px rgba(242,183,5,0)}}
+.scene .n,.chapter .num{transition:opacity 1.4s ease,transform 1.4s cubic-bezier(.2,.7,.2,1),letter-spacing 1.8s ease}
+.chapter .num{letter-spacing:.08em}
+.in.chapter .num{letter-spacing:0}
+.cut h2{transform:scale(1.25);opacity:0;transition:transform .5s cubic-bezier(.2,.9,.2,1),opacity .2s}
+.cut.seen h2{transform:none;opacity:1}
+
+/* reveal */
+.rv{opacity:0;transform:translateY(26px);transition:opacity 1s ease,transform 1.1s cubic-bezier(.2,.7,.2,1)}
+.in .rv{opacity:1;transform:none}
+.in .rv.d1{transition-delay:.15s}.in .rv.d2{transition-delay:.32s}.in .rv.d3{transition-delay:.5s}.in .rv.d4{transition-delay:.68s}.in .rv.d5{transition-delay:.86s}
+
+/* hero */
+#hero .copy{max-width:1200px}
+#hero h1{font-size:clamp(42px,6.2vw,108px)}
+.route{display:inline-flex;align-items:center;gap:18px;font-weight:500;font-size:clamp(13px,1.1vw,16px);letter-spacing:.34em;text-transform:uppercase}
+.route i{display:block;width:clamp(48px,8vw,130px);height:1px;background:var(--cab)}
+.scroll{position:absolute;right:var(--pad);bottom:clamp(48px,9vh,110px);font-weight:500;font-size:11px;letter-spacing:.26em;text-transform:uppercase;color:var(--soft);writing-mode:vertical-rl;display:flex;align-items:center;gap:14px}
+.scroll::after{content:"";width:1px;height:70px;background:linear-gradient(var(--cab),transparent);animation:drip 2.2s ease-in-out infinite}
+@keyframes drip{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}51%{transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
+
+/* idea */
+#idea h1{font-size:clamp(42px,6.6vw,116px)}
+#idea .lock{margin-top:clamp(22px,4vh,44px);opacity:0;transform:translateY(14px);transition:opacity .5s,transform .7s}
+#idea.hit .lock{opacity:1;transform:none}
+#idea .after{opacity:0;transition:opacity 1.2s .5s}
+#idea.hit .after{opacity:1}
+#idea .lock .route{font-size:clamp(15px,1.7vw,24px);letter-spacing:.4em}
+.flash{position:fixed;inset:0;background:#fff;opacity:0;pointer-events:none;z-index:70}
+.flash.go{animation:flash .7s ease-out 1}
+@keyframes flash{0%{opacity:.85}100%{opacity:0}}
+
+/* chapter openers */
+.chapter .num{font-family:var(--serif);font-size:clamp(64px,9vw,150px);line-height:.8;color:transparent;-webkit-text-stroke:1px rgba(244,240,232,.5);margin-bottom:.12em;display:block}
+.meta{display:flex;flex-wrap:wrap;gap:10px 34px;margin-top:34px;padding-top:22px;border-top:1px solid var(--line);max-width:760px}
+.meta div{font-weight:500;font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--soft)}
+.meta div b{display:block;font-weight:500;color:var(--dim);margin-bottom:6px}
+
+/* scenes */
+.scene .copy{max-width:600px}
+.scene:not(.right) > .ph::after{background:
+  linear-gradient(90deg,rgba(6,6,6,.92) 0%,rgba(6,6,6,.6) 34%,rgba(6,6,6,0) 66%),
+  linear-gradient(0deg,rgba(6,6,6,.8) 0%,rgba(6,6,6,0) 36%,rgba(6,6,6,.4) 100%)}
+.scene .n{font-family:var(--serif);font-size:clamp(44px,4.6vw,76px);line-height:.9;color:transparent;-webkit-text-stroke:1px rgba(244,240,232,.55);display:block;margin-bottom:10px}
+.scene .slug{font-weight:500;font-size:12px;letter-spacing:.26em;text-transform:uppercase;color:var(--soft);display:block;margin-bottom:18px}
+.scene h3{margin-bottom:.5em;font-size:clamp(26px,2.7vw,44px)}
+.snote{display:flex;gap:14px;align-items:baseline;margin-top:24px;padding-top:16px;border-top:1px solid var(--line);font-size:15px;line-height:1.5;color:var(--soft);max-width:34em}
+.snote b{font-weight:500;font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--paper);white-space:nowrap}
+.scene.right{align-items:flex-end}
+.scene.right > .ph::after{background:
+  linear-gradient(270deg,rgba(6,6,6,.92) 0%,rgba(6,6,6,.6) 34%,rgba(6,6,6,0) 66%),
+  linear-gradient(0deg,rgba(6,6,6,.8) 0%,rgba(6,6,6,0) 36%,rgba(6,6,6,.4) 100%)}
+.scene.top{justify-content:flex-start}
+.scene.top > .ph::after{background:linear-gradient(160deg,rgba(6,6,6,.93) 0%,rgba(6,6,6,.62) 30%,rgba(6,6,6,0) 58%),linear-gradient(0deg,rgba(6,6,6,.5) 0%,rgba(6,6,6,0) 30%) !important}
+.cut{overflow:hidden;background:var(--cab);color:#000;text-align:center;padding:clamp(40px,8vh,90px) var(--pad)}
+.cut h2{font-size:clamp(34px,4.6vw,76px);line-height:1}
+.cut .label{color:#000;display:block;margin-top:16px}
+
+/* grids */
+.wrap{max-width:1320px;width:100%;margin:0 auto}
+.head{max-width:820px;margin-bottom:clamp(40px,7vh,84px)}
+.head .label{display:block;margin-bottom:22px}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(24px,3.4vw,60px)}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(20px,2.6vw,44px)}
+.item{border-top:1px solid var(--line);padding-top:22px}
+.item .label{display:block;margin-bottom:14px}
+.item h3{margin-bottom:.5em}
+.item p{font-size:clamp(16px,1.2vw,19px);line-height:1.6;color:var(--soft)}
+.rules{display:flex;flex-wrap:wrap;gap:10px;margin-top:clamp(40px,7vh,80px)}
+.rules span{font-weight:500;font-size:12px;letter-spacing:.2em;text-transform:uppercase;border:1px solid var(--line);padding:12px 16px}
+
+/* rollout */
+.roll{display:grid;grid-template-columns:repeat(4,1fr);margin-top:clamp(40px,7vh,80px);border-top:1px solid var(--line)}
+.roll div{padding:24px 24px 0 0;position:relative}
+.roll div::before{content:"";position:absolute;top:-5px;left:0;width:9px;height:9px;border-radius:50%;background:var(--paper)}
+.roll div.k::before{background:var(--cab);box-shadow:0 0 0 6px rgba(242,183,5,.18)}
+.roll .label{display:block;margin-bottom:10px}
+.roll h3{font-size:clamp(20px,1.7vw,27px);margin-bottom:.4em}
+.roll p{font-size:clamp(15.5px,1.1vw,17.5px);line-height:1.55;color:var(--soft)}
+
+/* split (content) */
+.split{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:clamp(30px,5vw,90px);align-items:start}
+.split .pic{position:sticky;top:110px;aspect-ratio:4/5;overflow:hidden}
+.split .pic img,.split .pic video{width:100%;height:100%;object-fit:cover;object-position:38% center}
+.princ{counter-reset:p}
+.princ li{list-style:none;counter-increment:p;display:grid;grid-template-columns:64px 1fr;gap:8px;padding:28px 0;border-top:1px solid var(--line)}
+.princ li::before{content:"0" counter(p);font-family:var(--serif);font-size:22px;color:var(--dim);padding-top:4px}
+.princ h3{margin-bottom:.4em}
+.princ p{font-size:clamp(15px,1.12vw,18px);color:var(--soft)}
+
+/* quotes */
+.quote{border-top:1px solid var(--line);padding-top:26px}
+.quote p{font-family:var(--serif);font-size:clamp(20px,1.75vw,27px);line-height:1.36;color:var(--paper)}
+.quote .label{display:block;margin-top:18px;color:var(--dim)}
+.block{margin-top:clamp(70px,12vh,140px)}
+
+.cats .item{border-top:0 !important;padding-top:0}
+.cats .item::before{display:none}
+.thumb{aspect-ratio:4/5;overflow:hidden;margin-bottom:20px}
+.thumb img,.thumb video{width:100%;height:100%;object-fit:cover;transition:transform 1.6s cubic-bezier(.2,.7,.2,1)}
+.cats .item:hover .thumb img,.cats .item:hover .thumb video{transform:scale(1.05)}
+
+/* collabs */
+.collab{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);margin-top:clamp(36px,6vh,70px)}
+.collab div{background:rgba(6,6,6,.78);backdrop-filter:blur(6px);padding:clamp(22px,2.6vw,40px)}
+.collab .label{display:block;margin-bottom:14px}
+.collab h3{font-size:clamp(21px,1.9vw,30px);margin-bottom:.45em}
+.collab p{font-size:clamp(15.5px,1.1vw,17.5px);line-height:1.55;color:var(--soft)}
+#continuation .copy{max-width:760px}
+#continuation > .ph::after{background:linear-gradient(90deg,rgba(6,6,6,.93) 0%,rgba(6,6,6,.78) 45%,rgba(6,6,6,.35) 100%),linear-gradient(0deg,rgba(6,6,6,.9) 0%,rgba(6,6,6,.2) 60%,rgba(6,6,6,.5) 100%) !important}
+
+/* close */
+#close h1{font-size:clamp(40px,5.8vw,100px)}
+.credit{margin-top:clamp(40px,8vh,90px);font-weight:500;font-size:11px;letter-spacing:.26em;text-transform:uppercase;color:var(--dim);line-height:2}
+
+@media (max-width:900px){
+  .thumb{aspect-ratio:3/2}
+  .links a{display:none}
+  .pager{display:none}
+  .g3,.g4,.roll,.collab,.split{grid-template-columns:1fr}
+  .roll{border-top:0}.roll div{border-top:1px solid var(--line);padding:22px 0}
+  .split .pic{position:relative;top:0;aspect-ratio:3/2}
+  .scroll{display:none}
+  .scene.right{align-items:flex-start}
+  .panel > .ph::after,.scene.right > .ph::after,.panel.left > .ph::after{background:linear-gradient(0deg,rgba(6,6,6,.97) 0%,rgba(6,6,6,.78) 48%,rgba(6,6,6,.15) 82%,rgba(6,6,6,.5) 100%)}
+  .brand{font-size:15px;letter-spacing:.3em}.brand small{display:none}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .rv{opacity:1;transform:none;transition:none}
+  .panel > .ph img,.panel > .ph video{animation:none !important;translate:none;top:0;height:100% !important}
+  .scroll::after,.grain,.roll div.k::before{animation:none}
+  .sw .w > span{transform:none;transition:none}
+  .route i,.item::before,.princ li::after,.meta::before,.snote::before{transform:none;transition:none}
+  .cut h2{transform:none;opacity:1}
+}
+</style>
+</head>
+<body class="locked">
+
+<div class="progress" id="progress"></div>
+<div class="grain" aria-hidden="true"></div>
+<div class="pager"><button id="up" aria-label="Previous slide">↑</button><button id="down" aria-label="Next slide">↓</button></div>
+<div class="flash" id="flash"></div>
+
+<!-- GATE -->
+<div class="gate" id="gate">
+  <img class="bg" src="img/hero.jpg" alt="">
+  <div class="brand">Kissaki</div>
+  <p>A launch story for Kissaki Abu Dhabi, by INHAUS Digital. It was made to be heard as well as read.</p>
+  <button class="go" id="go">Enter with sound</button>
+  <button class="quiet" id="quiet">Enter without sound</button>
+</div>
+
+<!-- NAV -->
+<header class="nav">
+  <a class="brand" href="#hero">Kissaki<small>NYC — AUH</small></a>
+  <nav class="links">
+    <a href="#brand">The brand</a>
+    <a href="#idea">The idea</a>
+    <a href="#pre">Pre-opening</a>
+    <a href="#opening">Opening</a>
+    <a href="#social">Social</a>
+    <a href="#continuation">Continuation</a>
+    <button class="snd" id="snd" aria-label="Toggle sound">Sound off</button>
+  </nav>
+</header>
+
+<main>
+
+<!-- HERO -->
+<section class="panel left in" id="hero">
+  <div class="ph"><img src="img/hero.jpg" alt="A yellow cab passing a Japanese restaurant on the Bowery at night"></div>
+  <div class="copy">
+    <span class="label rv">INHAUS Digital <b>·</b> Kissaki Abu Dhabi</span>
+    <h1 class="rv d1">From the Bowery to Saadiyat.</h1>
+    <div class="route rv d2"><span>New York</span><i></i><span>Abu Dhabi</span></div>
+  </div>
+  <div class="scroll">Scroll</div>
+</section>
+
+<!-- WHERE IT COMES FROM -->
+<section class="panel left" id="bowery">
+  <div class="ph"><img loading="lazy" src="img/nyc-room.jpg" alt="A packed Japanese restaurant in downtown Manhattan"></div>
+  <div class="copy">
+    <span class="label rv">Where it comes from</span>
+    <h2 class="rv d1">In New York, this place is never quiet.</h2>
+    <p class="rv d2">Serious sushi, not so serious room. Music up, cocktails flying, chefs who are part of the party. That's Kissaki on the Bowery, any night of the week.</p>
+  </div>
+</section>
+
+<!-- THE BRAND -->
+<section class="panel plain" id="brand">
+  <div class="wrap">
+    <div class="head">
+      <span class="label rv">The brand</span>
+      <h2 class="rv d1">Not the quiet side of Japanese dining.</h2>
+      <p class="rv d2 soft" style="margin-top:18px">Let's be honest, Abu Dhabi doesn't need another Japanese restaurant. It has plenty, and most of them whisper.</p>
+    </div>
+    <div class="g3">
+      <div class="item rv d1"><span class="label">The problem</span><h3>Good sushi is everywhere.</h3><p>So "we're Japanese" is not a reason to come.</p></div>
+      <div class="item rv d2"><span class="label">The difference</span><h3>Same craft, more noise.</h3><p>Great food, great music, great cocktails, great room, great crowd. All at the same time.</p></div>
+      <div class="item rv d3"><span class="label">The position</span><h3>Japanese craft. New York energy. Now in Abu Dhabi.</h3><p>What Carbone did for Italian in Dubai. The attitude lands together with the menu.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- THE IDEA -->
+<section class="panel center" id="idea">
+  <div class="ph"><img loading="lazy" src="img/streaks.jpg" alt="Light trails of yellow cabs on a Manhattan avenue at night"></div>
+  <div>
+    <span class="label rv" style="display:block;margin-bottom:26px">The idea</span>
+    <h1 class="rv d1">The night moves east.</h1>
+    <div class="lock"><div class="route"><span>Kissaki&nbsp;&nbsp;NYC</span><i></i><span>AUH</span></div></div>
+    <div class="after">
+      <p style="margin-top:clamp(26px,5vh,54px)">We're not opening a restaurant. We're moving a night from New York to Abu Dhabi, and everybody gets to watch.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CHAPTER 1 -->
+<section class="panel left chapter" id="pre">
+  <div class="ph"><img loading="lazy" src="img/s3-hail.jpg" alt="An arm raised to hail a yellow cab on a wet New York street"></div>
+  <div class="copy">
+    <span class="num rv">01</span>
+    <span class="label rv d1"><b>Pre-opening</b> · Three weeks out</span>
+    <h2 class="rv d2">The launch film.</h2>
+    <p class="rv d3">Two chefs, a set of knives and a yellow cab. No voiceover, no faces, and we never show the new restaurant. Yes, on purpose.</p>
+    <div class="meta rv d4">
+      <div><b>Format</b>60" film + cut-downs</div>
+      <div><b>Locations</b>New York · Abu Dhabi</div>
+      <div><b>Feel</b>Close, handheld, loud</div>
+    </div>
+  </div>
+</section>
+
+<!-- SCENES -->
+<section class="panel scene">
+  <div class="ph"><img loading="lazy" src="img/s1-room.jpg" alt="Chefs working fast at a packed sushi counter"></div>
+  <div class="copy">
+    <span class="n rv">1</span>
+    <span class="slug rv d1">Int. Kissaki, the Bowery · Night</span>
+    <h3 class="rv d2">We start in the middle of it.</h3>
+    <p class="rv d3">Friday night, full volume. No intro. We're already inside and already late.</p>
+    <div class="snote rv d4"><b>Sound</b><span>Just the room. No music yet.</span></div>
+  </div>
+</section>
+
+<section class="panel scene right">
+  <div class="ph"><img loading="lazy" src="img/s2-knives.jpg" alt="Hands rolling Japanese knives into a leather knife roll"></div>
+  <div class="copy">
+    <span class="n rv">2</span>
+    <span class="slug rv d1">The counter · Continuous</span>
+    <h3 class="rv d2">Two chefs pack their knives.</h3>
+    <p class="rv d3">Right in the middle of service. They roll them up, buckle the leather and nobody even looks. Weird? A bit. That's the hook.</p>
+    <div class="snote rv d4"><b>Sound</b><span>Steel, leather, buckle. Then the track kicks in.</span></div>
+  </div>
+</section>
+
+<section class="panel scene">
+  <div class="ph"><img loading="lazy" src="img/s3-hail.jpg" alt="A raised arm and a yellow cab braking on the Bowery"></div>
+  <div class="copy">
+    <span class="n rv">3</span>
+    <span class="slug rv d1">Ext. the Bowery · Night</span>
+    <h3 class="rv d2">Arm up. Whistle.</h3>
+    <p class="rv d3">The most New York move ever invented. A yellow cab pulls over.</p>
+    <div class="snote rv d4"><b>Sound</b><span>The whistle stops the music for half a second.</span></div>
+  </div>
+</section>
+
+<section class="panel scene right">
+  <div class="ph"><img loading="lazy" src="img/s4-cab.jpg" alt="A leather knife roll on the back seat of a yellow cab"></div>
+  <div class="copy">
+    <span class="n rv">4</span>
+    <span class="slug rv d1">Int. yellow cab · Moving</span>
+    <h3 class="rv d2">The knives ride in the back.</h3>
+    <p class="rv d3">Door shuts. New York goes by the window. We cut on the slam.</p>
+  </div>
+</section>
+
+<div class="cut" data-stop>
+  <h2>Cut.</h2>
+  <span class="label">11,000 km later</span>
+</div>
+
+<section class="panel scene top">
+  <div class="ph"><img loading="lazy" src="img/s5-arrival.jpg" alt="A New York yellow cab stopped under palm trees in Abu Dhabi at night"></div>
+  <div class="copy">
+    <span class="n rv">5</span>
+    <span class="slug rv d1">Ext. Saadiyat, Abu Dhabi · Night</span>
+    <h3 class="rv d2">Same door. Different city.</h3>
+    <p class="rv d3">Palm trees, warm air and a New York cab that has no business being here. That's the screenshot.</p>
+    <div class="snote rv d4"><b>Sound</b><span>The city changes. The beat doesn't.</span></div>
+  </div>
+</section>
+
+<section class="panel scene right">
+  <div class="ph"><img loading="lazy" src="img/s6-door.jpg" alt="Two silhouettes walking through a slatted wooden door into warm light"></div>
+  <div class="copy">
+    <span class="n rv">6</span>
+    <span class="slug rv d1">Kissaki Abu Dhabi · The door</span>
+    <h3 class="rv d2">They go in. We don't.</h3>
+    <p class="rv d3">The door closes. Black. Then you hear the room wake up. We never show the night. You want to see it, you book it.</p>
+    <div class="snote rv d4"><b>End frame</b><span>Kissaki NYC — AUH. Now open, Saadiyat Grove.</span></div>
+  </div>
+</section>
+
+<!-- ROLLOUT -->
+<section class="panel plain" id="why">
+  <div class="wrap">
+    <div class="head" style="margin-bottom:0">
+      <span class="label rv">How it rolls out</span>
+      <h2 class="rv d1">Three weeks to get there.</h2>
+    </div>
+    <div class="roll">
+      <div class="rv d1"><span class="label">Week 3</span><h3>The Bowery</h3><p>Where it comes from. Only New York.</p></div>
+      <div class="rv d2"><span class="label">Week 2</span><h3>The people, the food</h3><p>Faster, closer. Same shoot.</p></div>
+      <div class="rv d3 k"><span class="label"><b>Week 1</b></span><h3>The film</h3><p>The cab leaves. The opening date goes out.</p></div>
+      <div class="rv d4 k"><span class="label"><b>Opening night</b></span><h3>The door opens</h3><p>And you finally see what's inside.</p></div>
+    </div>
+    <div class="rules rv d3"><span>No faces</span><span>Close-ups only</span><span>Handheld</span><span>Low shutter</span><span>Cut on sound</span></div>
+  </div>
+</section>
+
+<!-- CHAPTER 2 -->
+<section class="panel left chapter" id="opening">
+  <div class="ph"><img loading="lazy" src="img/opening.jpg" alt="A full restaurant raising a toast on opening night"></div>
+  <div class="copy">
+    <span class="num rv">02</span>
+    <span class="label rv d1"><b>Opening</b> · The first three months</span>
+    <h2 class="rv d2">Full from night one.</h2>
+    <p class="rv d3">For three months this has to be the busiest room in town. PR fills it with the right people. We're there with the cameras. Simple deal.</p>
+  </div>
+</section>
+
+<section class="panel scene right" id="night-one">
+  <div class="ph"><img loading="lazy" src="img/tuna.jpg" alt="A tuna cutting ceremony surrounded by guests filming"></div>
+  <div class="copy">
+    <span class="slug rv">Night one</span>
+    <h3 class="rv d1">One night out in New York.</h3>
+    <p class="rv d2">Flash photos at the door, a New York DJ, the tuna cut in front of everyone. Then the lights go down and it becomes Kissaki After Dark.</p>
+  </div>
+</section>
+
+<section class="panel scene" id="ninety">
+  <div class="ph"><img loading="lazy" src="img/bar.jpg" onerror="this.src='img/opening.jpg'" alt="A bar three deep on a busy night"></div>
+  <div class="copy">
+    <span class="slug rv">Nights 2 to 90</span>
+    <h3 class="rv d1">We shoot the room, not the guest list.</h3>
+    <p class="rv d2">A famous face is one story. A packed room is a reputation. So we film the toast, the knife, the bar three deep. Tagging people is PR's job.</p>
+  </div>
+</section>
+
+<!-- ACTIVATION IDEA -->
+<section class="panel scene right" id="activation">
+  <div class="ph"><img loading="lazy" src="img/arrivals.jpg" alt="A New York yellow cab parked outside a restaurant in Abu Dhabi as guests arrive"></div>
+  <div class="copy">
+    <span class="slug rv">Extra idea · If we can get one</span>
+    <h3 class="rv d1">What if the cab was real?</h3>
+    <p class="rv d2">A New York yellow cab driving around Abu Dhabi before we open. No logo, just NYC — AUH on the door. People will do the rest.</p>
+    <p class="rv d3 soft">We can't promise the car. If it happens, great. If not, the plan doesn't need it.</p>
+  </div>
+</section>
+
+<!-- SOCIAL -->
+<section class="panel left" id="social">
+  <div class="ph"><video autoplay muted loop playsinline preload="metadata" poster="img/food.jpg" src="video/wide.mp4" aria-label="Close-ups of drinks being poured"></video></div>
+  <div class="copy">
+    <span class="label rv">Instagram</span>
+    <h2 class="rv d1">Then comes the everyday.</h2>
+    <p class="rv d2">The film opens the page. After that it has one job: every time someone checks it, it looks like tonight is the night.</p>
+  </div>
+</section>
+
+<section class="panel plain" id="content">
+  <div class="wrap">
+    <div class="head" style="margin-bottom:clamp(36px,6vh,70px)">
+      <span class="label rv">The voice</span>
+      <h2 class="rv d1">We sound like the host, not the brochure.</h2>
+    </div>
+    <div class="g3">
+      <div class="quote rv d1"><p>“Friday. The counter's full. The bar isn't. Yet.”</p><span class="label">A Story, 7 PM</span></div>
+      <div class="quote rv d2"><p>“The tuna came in this morning. It won't see tomorrow.”</p><span class="label">A Reel caption</span></div>
+      <div class="quote rv d3"><p>“Six of you at eleven? Now we're talking.”</p><span class="label">A reply in the DMs</span></div>
+    </div>
+
+    <div class="head block" data-stop style="margin-bottom:clamp(36px,6vh,70px)">
+      <span class="label rv">The page</span>
+      <h2 class="rv d1">One page, four jobs.</h2>
+    </div>
+    <div class="g4">
+      <div class="item rv d1"><span class="label">The grid</span><h3>The magazine.</h3><p>The good-looking stuff. What kind of place is this?</p></div>
+      <div class="item rv d2"><span class="label">Reels</span><h3>The night.</h3><p>Loud, fast, full room. How new people find us.</p></div>
+      <div class="item rv d3"><span class="label">Stories</span><h3>Tonight.</h3><p>What's on, who's playing, what just landed. Every day.</p></div>
+      <div class="item rv d4"><span class="label">DMs and comments</span><h3>The host.</h3><p>We answer like someone who works the floor. A DM is a booking waiting to happen.</p></div>
+    </div>
+
+    <div class="head block" data-stop style="margin-bottom:0">
+      <span class="label rv">The week</span>
+      <h2 class="rv d1">The feed lives like the restaurant.</h2>
+    </div>
+    <div class="roll">
+      <div class="rv d1"><span class="label">Monday, Tuesday</span><h3>The craft</h3><p>Hands, knives, one dish.</p></div>
+      <div class="rv d2"><span class="label">Wednesday</span><h3>The invite</h3><p>What's on this weekend.</p></div>
+      <div class="rv d3 k"><span class="label">Thursday to Saturday</span><h3>The night</h3><p>Live from the floor. Nothing polished.</p></div>
+      <div class="rv d4 k"><span class="label">Sunday</span><h3>Last night</h3><p>Proof it happened. And that you missed it.</p></div>
+    </div>
+
+    <div class="head block" data-stop>
+      <span class="label rv">The look</span>
+      <h2 class="rv d1">How you know it's us.</h2>
+    </div>
+    <div class="split">
+      <div class="pic rv"><video autoplay muted loop playsinline preload="metadata" src="video/look.mp4" aria-label="Close-ups of glasses, pours and details"></video></div>
+      <ul class="princ">
+        <li class="rv"><div><h3>Nothing stands still.</h3><p>Low shutter, flash, handheld. Even the food moves.</p></div></li>
+        <li class="rv"><div><h3>We cut on sound.</h3><p>Knife, shaker, door. If you can hear it, we cut on it.</p></div></li>
+        <li class="rv"><div><h3>The room is always full.</h3><p>An empty table never makes the feed.</p></div></li>
+        <li class="rv"><div><h3>After opening, it's all Abu Dhabi.</h3><p>New York stays in the pre-opening. The only thing left is the signature: NYC — AUH.</p></div></li>
+      </ul>
+    </div>
+
+    <div class="head" data-stop style="margin-top:clamp(70px,12vh,140px);margin-bottom:clamp(30px,5vh,56px)">
+      <span class="label rv">The content</span>
+      <h2 class="rv d1">Four things we shoot.</h2>
+    </div>
+    <div class="g4 cats">
+      <div class="item rv d1"><div class="thumb"><img loading="lazy" src="img/opening.jpg" alt="A full room raising a toast" style="object-position:40% center"></div><h3>The nightlife</h3><p>The room when it's loud. The crowd, the DJ, the lights going down.</p></div>
+      <div class="item rv d2"><div class="thumb"><img loading="lazy" src="img/food.jpg" alt="Nigiri finished with a flame" style="object-position:72% center"></div><h3>The food</h3><p>Always in motion. The hand, the flame, the knife.</p></div>
+      <div class="item rv d3"><div class="thumb"><img loading="lazy" src="img/tuna.jpg" alt="A whole tuna being cut in front of guests" style="object-position:70% center"></div><h3>The tuna ceremony</h3><p>The whole thing, start to finish. It's the show of the house.</p></div>
+      <div class="item rv d4"><div class="thumb"><video autoplay muted loop playsinline preload="metadata" poster="img/bar.jpg" src="video/drinks.mp4" aria-label="Cocktails being poured"></video></div><h3>The drinks</h3><p>The bar, the shaker, the pour. Half of the night happens here.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- CHAPTER 3 -->
+<section class="panel chapter" id="continuation">
+  <div class="ph"><img loading="lazy" src="img/community.jpg" alt="A creative crowd sharing a long table late at night"></div>
+  <div class="copy">
+    <span class="num rv">03</span>
+    <span class="label rv d1"><b>Continuation</b> · Month four onwards</span>
+    <h2 class="rv d2">From full room to scene.</h2>
+    <p class="rv d3">After three months, being full isn't news anymore. So every month we hand the night to a different crowd.</p>
+  </div>
+  <div class="collab rv d4">
+    <div><span class="label"><b>Fashion</b></span><h3>Kissaki × BEAMS</h3><p>Fashion night, with the Khalifa Fund community.</p></div>
+    <div><span class="label"><b>Culture</b></span><h3>Kissaki × The Karak</h3><p>DJs, artists, designers. Their crowd, our counter.</p></div>
+    <div><span class="label"><b>Design</b></span><h3>Kissaki × 421</h3><p>The Creative Table. One long table for the makers of 421.</p></div>
+  </div>
+  <p class="rv d5 soft" style="margin-top:28px;font-size:15.5px">Each one is a night, a new crowd and a month of content.</p>
+</section>
+
+<!-- CLOSE -->
+<section class="panel center" id="close">
+  <div class="ph"><img loading="lazy" src="img/s5-arrival.jpg" alt="A yellow cab in Abu Dhabi at night"></div>
+  <div>
+    <h1 class="rv">The night is on its way.</h1>
+    <div class="route rv d1" style="margin-top:clamp(22px,4vh,44px)"><span>Kissaki&nbsp;&nbsp;NYC</span><i></i><span>AUH</span></div>
+    <div class="credit rv d2">INHAUS Digital · Dubai<br>Images are mood frames created for this presentation</div>
+  </div>
+</section>
+
+</main>
+
+<audio id="aMuff" src="audio/ambience_muffled_loop.wav" loop preload="auto"></audio>
+<audio id="aBed"  src="audio/reveal_and_bed.mp3" preload="auto"></audio>
+<audio id="aFull" src="audio/ambience_full_loop.wav" loop preload="none"></audio>
+
+<script>
+(() => {
+  const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
+  const aMuff = $('#aMuff'), aBed = $('#aBed'), aFull = $('#aFull'), idea = $('#idea'), flash = $('#flash');
+  const DROP = 4.8;                       // seconds from the door opening to the beat in reveal_and_bed.mp3
+  let sound = false, entered = false, revealed = false;
+  aMuff.volume = .9; aBed.volume = 1; aFull.volume = .16;
+
+  function label() { $('#snd').textContent = sound ? 'Sound on' : 'Sound off'; }
+  function enter(withSound) {
+    if (entered) return; entered = true; sound = withSound;
+    $('#gate').classList.add('gone'); document.body.classList.remove('locked');
+    if (sound) aMuff.play().catch(() => {});
+    label();
+  }
+  $('#go').onclick = () => enter(true);
+  $('#quiet').onclick = () => enter(false);
+
+  function reveal() {
+    if (revealed || !entered) return; revealed = true;
+    flash.classList.add('go');
+    aMuff.pause();
+    if (sound) { aBed.currentTime = 0; aBed.play().catch(() => {}); }
+    setTimeout(() => idea.classList.add('hit'), DROP * 1000);
+  }
+  aBed.addEventListener('ended', () => { if (sound) aFull.play().catch(() => {}); });
+
+  $('#snd').onclick = () => {
+    sound = !sound; label();
+    if (!sound) { [aMuff, aBed, aFull].forEach(a => a.pause()); return; }
+    if (!revealed) aMuff.play().catch(() => {});
+    else if (aBed.ended) aFull.play().catch(() => {});
+    else { if (aBed.currentTime < 9) aBed.currentTime = 9; aBed.play().catch(() => {}); }
+  };
+  addEventListener('keydown', e => { if (e.key.toLowerCase() === 'm' && entered) $('#snd').click(); });
+
+  const calm = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* headlines: split into words that rise from a mask */
+  $$('.panel h1, .panel h2, .panel h3').forEach(h => {
+    if (h.children.length) return;                       // leave headings with inner markup alone
+    const base = h.classList.contains('d1') ? 150 : h.classList.contains('d2') ? 320 : h.classList.contains('d3') ? 500 : 0;
+    h.innerHTML = h.textContent.trim().split(/\s+/).map((w, i) => `<span class="w"><span style="--i:${i}">${w}</span></span>`).join(' ');
+    h.style.setProperty('--b', base + 'ms'); h.classList.add('sw');
+  });
+  const ioH = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) e.target.classList.add('on'); }), { threshold: .3 });
+  $$('.sw').forEach(h => ioH.observe(h));
+
+  /* panels and blocks reveal as they arrive */
+  const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); }), { threshold: .22 });
+  $$('.panel').forEach(p => io.observe(p));
+  const io3 = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.style.opacity = 1; e.target.style.transform = 'none'; e.target.classList.add('seen'); } }), { threshold: .15 });
+  $$('.panel.plain .rv:not(.sw), .collab, #continuation > p').forEach(el => { el.style.opacity = 0; el.style.transform = 'translateY(26px)'; io3.observe(el); });
+  const ioS = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) e.target.classList.add('seen'); }), { threshold: .4 });
+  $$('.cut, .item, .princ li').forEach(el => ioS.observe(el));
+
+  /* light parallax on the pictures */
+  const pics = $$('.panel > .ph img, .panel > .ph video'); let tick = false;
+  function parallax() { tick = false; if (calm) return;
+    pics.forEach(im => { const r = im.parentElement.getBoundingClientRect(); if (r.bottom < 0 || r.top > innerHeight) return;
+      const t = Math.max(-1, Math.min(1, ((r.top + r.height / 2) - innerHeight / 2) / ((innerHeight + r.height) / 2)));
+      im.style.setProperty('--py', (t * -0.11 * r.height).toFixed(1) + 'px'); }); }
+  addEventListener('scroll', () => { if (!tick) { tick = true; requestAnimationFrame(parallax); } }, { passive: true }); addEventListener('resize', parallax); parallax();
+
+  /* clips play only while they are on screen */
+  const ioV = new IntersectionObserver(es => es.forEach(e => { const v = e.target; if (e.isIntersecting && !calm) v.play().catch(() => {}); else v.pause(); }), { threshold: .15 });
+  $$('video').forEach(v => { v.muted = true; ioV.observe(v); });
+
+  /* official logo: drop img/kissaki-logo.svg or .png in the folder and it replaces the typed name */
+  (function tryLogo(list) { if (!list.length) return; const im = new Image();
+    im.onload = () => { $$('.brand').forEach(b => { const small = b.querySelector('small'); b.textContent = ''; const l = new Image(); l.src = im.src; l.alt = 'Kissaki'; b.appendChild(l); if (small) b.appendChild(small); b.classList.add('has'); });
+      const c = new Image(); c.src = im.src; c.alt = 'Kissaki'; c.className = 'closelogo'; const h = $('#close h1'); h.parentElement.insertBefore(c, h); };
+    im.onerror = () => tryLogo(list.slice(1)); im.src = list[0]; })(['img/kissaki-logo.svg', 'img/kissaki-logo.png']);
+
+  /* slide by slide with the arrows */
+  const stops = $$('.panel, [data-stop]');
+  const topOf = el => Math.max(0, Math.round(el.getBoundingClientRect().top + scrollY - (el.classList.contains('panel') ? 0 : el.classList.contains('cut') ? innerHeight * .3 : 96)));
+  function step(dir) {
+    if (!entered) return;
+    const y = scrollY, ys = stops.map(topOf).sort((a, b) => a - b);
+    const t = dir > 0 ? ys.find(v => v > y + 12) : [...ys].reverse().find(v => v < y - 12);
+    if (t !== undefined) scrollTo({ top: t, behavior: calm ? 'auto' : 'smooth' });
+  }
+  $('#down').onclick = () => step(1); $('#up').onclick = () => step(-1);
+  addEventListener('keydown', e => {
+    if (!entered) { if (e.key === 'Enter') enter(true); return; }
+    if (e.target.closest && e.target.closest('button, a') && (e.key === ' ' || e.key === 'Enter')) return;
+    if (['ArrowDown', 'ArrowRight', 'PageDown', ' '].includes(e.key)) { e.preventDefault(); step(1); }
+    else if (['ArrowUp', 'ArrowLeft', 'PageUp'].includes(e.key)) { e.preventDefault(); step(-1); }
+    else if (e.key === 'Home') { e.preventDefault(); scrollTo({ top: 0, behavior: 'smooth' }); }
+    else if (e.key === 'End') { e.preventDefault(); scrollTo({ top: document.documentElement.scrollHeight, behavior: 'smooth' }); }
+  });
+
+  /* the reveal: when the idea takes the screen */
+  new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) reveal(); }), { threshold: .6 }).observe(idea);
+
+  /* progress + active chapter */
+  const links = $$('.links a'), targets = links.map(a => $(a.getAttribute('href')));
+  function onScroll() {
+    const h = document.documentElement, max = h.scrollHeight - innerHeight;
+    $('#progress').style.width = (max > 0 ? h.scrollTop / max * 100 : 0) + '%';
+    let cur = -1; targets.forEach((t, k) => { if (t && t.getBoundingClientRect().top < innerHeight * .5) cur = k; });
+    links.forEach((a, k) => a.classList.toggle('on', k === cur));
+  }
+  addEventListener('scroll', onScroll, { passive: true }); onScroll();
+})();
+</script>
+</body>
+</html>
