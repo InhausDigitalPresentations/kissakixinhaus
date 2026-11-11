@@ -100,9 +100,10 @@ body.locked .pager{opacity:0;pointer-events:none}
 @keyframes grain{0%{transform:translate(0,0)}20%{transform:translate(-2%,1.5%)}40%{transform:translate(1.5%,-2%)}60%{transform:translate(-1.5%,-1%)}80%{transform:translate(2%,2%)}100%{transform:translate(0,0)}}
 
 /* living pictures: slow drift + light parallax */
-.panel > .ph img,.panel > .ph video{object-fit:cover;position:absolute;left:0;top:-14%;width:100%;height:128% !important;transform:none !important;scale:1.02;translate:0 var(--py,0px);transition:none !important;will-change:translate,scale}
+.panel > .ph img,.panel > .ph video{object-fit:cover;position:absolute;left:0;top:-20%;width:100%;height:140% !important;transform:none !important;scale:1.07;translate:var(--mx,0px) calc(var(--py,0px) + var(--my,0px));transition:none !important;will-change:translate,scale}
 .panel.in > .ph img,.panel.in > .ph video{animation:drift 26s ease-in-out infinite alternate}
-@keyframes drift{from{scale:1.02}to{scale:1.07}}
+@keyframes drift{from{scale:1.07}to{scale:1.12}}
+.panel .copy,.panel.center > div:not(.ph):not(.wrap){translate:calc(var(--mx,0px) * -.4) calc(var(--my,0px) * -.4 + var(--ty,0px))}
 .panel > .ph{opacity:.55;transition:opacity 1.6s ease}
 .panel.in > .ph{opacity:1}
 
@@ -440,9 +441,9 @@ body.locked .pager{opacity:0;pointer-events:none}
       <h2 class="rv d1">Three weeks to get there.</h2>
     </div>
     <div class="roll">
-      <div class="rv d1"><span class="label">Week 3</span><h3>The Bowery</h3><p>Where it comes from. Only New York.</p></div>
+      <div class="rv d1"><span class="label">Week 1</span><h3>The Bowery</h3><p>Where it comes from. Only New York.</p></div>
       <div class="rv d2"><span class="label">Week 2</span><h3>The people, the food</h3><p>Faster, closer. Same shoot.</p></div>
-      <div class="rv d3 k"><span class="label"><b>Week 1</b></span><h3>The film</h3><p>The cab leaves. The opening date goes out.</p></div>
+      <div class="rv d3 k"><span class="label"><b>Week 3</b></span><h3>The film</h3><p>The cab leaves. The opening date goes out.</p></div>
       <div class="rv d4 k"><span class="label"><b>Opening night</b></span><h3>The door opens</h3><p>And you finally see what's inside.</p></div>
     </div>
     <div class="rules rv d3"><span>No faces</span><span>Close-ups only</span><span>Handheld</span><span>Low shutter</span><span>Cut on sound</span></div>
@@ -582,7 +583,7 @@ body.locked .pager{opacity:0;pointer-events:none}
   <div class="ph"><img loading="lazy" src="img/s5-arrival.jpg" alt="A yellow cab in Abu Dhabi at night"></div>
   <div>
     <h1 class="rv">The night is on its way.</h1>
-    <div class="route rv d1" style="margin-top:clamp(22px,4vh,44px)"><span>Kissaki&nbsp;&nbsp;NYC</span><i></i><span>AUH</span></div>
+    <div class="route rv d1" style="margin-top:clamp(22px,4vh,44px)"><span>NYC</span><i></i><span>AUH</span></div>
     <div class="credit rv d2">INHAUS Digital · Dubai<br>Images are mood frames created for this presentation</div>
   </div>
 </section>
@@ -654,7 +655,8 @@ body.locked .pager{opacity:0;pointer-events:none}
   function parallax() { tick = false; if (calm) return;
     pics.forEach(im => { const r = im.parentElement.getBoundingClientRect(); if (r.bottom < 0 || r.top > innerHeight) return;
       const t = Math.max(-1, Math.min(1, ((r.top + r.height / 2) - innerHeight / 2) / ((innerHeight + r.height) / 2)));
-      im.style.setProperty('--py', (t * -0.11 * r.height).toFixed(1) + 'px'); }); }
+      im.style.setProperty('--py', (t * -0.17 * r.height).toFixed(1) + 'px');
+      const c = im.closest('.panel').querySelector('.copy, :scope > div:not(.ph)'); if (c) c.style.setProperty('--ty', (t * 46).toFixed(1) + 'px'); }); }
   addEventListener('scroll', () => { if (!tick) { tick = true; requestAnimationFrame(parallax); } }, { passive: true }); addEventListener('resize', parallax); parallax();
 
   /* clips play only while they are on screen */
@@ -666,6 +668,15 @@ body.locked .pager{opacity:0;pointer-events:none}
     im.onload = () => { $$('.brand').forEach(b => { const small = b.querySelector('small'); b.textContent = ''; const l = new Image(); l.src = im.src; l.alt = 'Kissaki'; b.appendChild(l); if (small) b.appendChild(small); b.classList.add('has'); });
       const c = new Image(); c.src = im.src; c.alt = 'Kissaki'; c.className = 'closelogo'; const h = $('#close h1'); h.parentElement.insertBefore(c, h); };
     im.onerror = () => tryLogo(list.slice(1)); im.src = list[0]; })(['img/kissaki-logo.svg', 'img/kissaki-logo.png']);
+
+  /* the pictures follow the cursor a little, the text goes the other way: depth even when the page is still */
+  if (!calm && matchMedia('(hover: hover)').matches) {
+    let tx = 0, ty = 0, cx = 0, cy = 0, run = false; const root = document.documentElement;
+    const loop = () => { cx += (tx - cx) * .06; cy += (ty - cy) * .06;
+      root.style.setProperty('--mx', (-cx * 26).toFixed(2) + 'px'); root.style.setProperty('--my', (-cy * 16).toFixed(2) + 'px');
+      if (Math.abs(tx - cx) + Math.abs(ty - cy) > .002) requestAnimationFrame(loop); else run = false; };
+    addEventListener('mousemove', e => { tx = e.clientX / innerWidth * 2 - 1; ty = e.clientY / innerHeight * 2 - 1; if (!run) { run = true; requestAnimationFrame(loop); } }, { passive: true });
+  }
 
   /* slide by slide with the arrows */
   const stops = $$('.panel, [data-stop]');
